@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../contexts/UserContext';
+
 
 const LogIn = () => {
+    const { signInUser, signInWithGoogle } = useContext(AuthContext);
+    // console.log(signInUser)
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        
+        signInUser(email, password)
+            .then((result) => {
+                const user = result.user;
+                form.reset();
+                // console.log(user)
+            })
+            .catch((error) => {
+                console.log(error.message)
+            })
+
+    }
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then((result) => {
+                const user = result.user;
+                // console.log(user);
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
 
@@ -32,7 +56,10 @@ const LogIn = () => {
                             </label>
                             <input type="password" name='password' placeholder="password" className="input input-bordered" required />
                             <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                <a href="/" className="label-text-alt link link-hover">Forgot password?</a>
+                            </label>
+                            <label className="label">
+                                <p>Wan to Log In With<Link onClick={handleGoogleSignIn} className='btn btn-outline btn-xs ml-4' >Google?</Link></p>
                             </label>
                             <label className="label">
                                 <p>New Here? <Link className='btn btn-link' to='/register'>Register</Link></p>

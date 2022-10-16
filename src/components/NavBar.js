@@ -1,9 +1,22 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../contexts/UserContext';
 
 
 const NavBar = () => {
-    
-    
+    const { user, logOut } = useContext(AuthContext);
+    // console.log(user)
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {
+                // console.log("successfully log out")
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
     return (
         <div className="navbar bg-base-100 sticky top-0">
             <div className="navbar-start">
@@ -19,14 +32,14 @@ const NavBar = () => {
                 <Link className='btn btn-sm btn-outline ml-5' to='/'>Home</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal p-0">
-                    <li><a>Item 1</a></li>
-                    <li><a>Item 3</a></li>
-                </ul>
+                <h3>Greeting! {user ? user.email : 'Wanderer! LogIn/Register'}</h3>
             </div>
             <div className="navbar-end mr-5">
-                <Link className='btn btn-sm btn-outline mr-3' to='/login'>LogIn</Link>
-                <Link className='btn btn-sm btn-outline' to='/register'>Register</Link>
+                <Link className='btn btn-sm btn-outline mr-3' to='/register'>Register</Link>
+                {
+                    user ? <Link onClick={handleLogOut} className='btn btn-sm btn-outline' >Log Out</Link>
+                        : <Link className='btn btn-sm btn-outline mr-3' to='/login'>LogIn</Link>
+                }
             </div>
         </div>
     );
