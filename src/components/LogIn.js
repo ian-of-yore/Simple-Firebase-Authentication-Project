@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/UserContext';
 
 
 const LogIn = () => {
     const { signInUser, signInWithGoogle } = useContext(AuthContext);
-    // console.log(signInUser)
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -16,7 +16,7 @@ const LogIn = () => {
             .then((result) => {
                 const user = result.user;
                 form.reset();
-                // console.log(user)
+                navigate('/orders');
             })
             .catch((error) => {
                 console.log(error.message)
@@ -29,6 +29,7 @@ const LogIn = () => {
             .then((result) => {
                 const user = result.user;
                 // console.log(user);
+                navigate('/orders');
             })
             .catch((error) => {
                 console.log(error)
@@ -59,10 +60,10 @@ const LogIn = () => {
                                 <a href="/" className="label-text-alt link link-hover">Forgot password?</a>
                             </label>
                             <label className="label">
-                                <p>Wan to Log In With<Link onClick={handleGoogleSignIn} className='btn btn-outline btn-xs ml-4' >Google?</Link></p>
+                                <p>Want to Log In With<Link onClick={handleGoogleSignIn} className='btn btn-outline btn-xs ml-4' >Google?</Link></p>
                             </label>
                             <label className="label">
-                                <p>New Here? <Link className='btn btn-link' to='/register'>Register</Link></p>
+                                <p>New Here? <Link className='btn btn-link text-white' to='/register'>Register</Link></p>
                             </label>
                         </div>
                         <div className="form-control mt-6">
